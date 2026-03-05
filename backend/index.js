@@ -8,20 +8,20 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'plot'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
 });
 
 db.connect((err) => {
     if (err) {
-        console.log(err);
+        console.log("DB connection error:", err);
         return;
     }
-    console.log("Connected to MySQL database");
+    console.log("Connected to Railway MySQL");
 });
-
 
 app.get('/plots', (req, res) => {
 
@@ -38,6 +38,8 @@ app.get('/plots', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
