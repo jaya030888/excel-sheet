@@ -6,7 +6,7 @@ function App() {
   const [search, setSearch] = useState("");
 
   const fetchPlots = async () => {
-    const res = await fetch('https://excel-sheet-1.onrender.com/plots');
+    const res = await fetch("https://excel-sheet-1.onrender.com/plots");
     const data = await res.json();
     setPlots(data);
   };
