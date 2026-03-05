@@ -28,11 +28,11 @@ function App() {
 
       <ul>
         {plots
-          .filter((item) =>
-            item.acc.toString().includes(search)
-          )
+          // .filter((item) =>
+          //   item.acc.toString().includes(search)
+          // )
           .map((item) => (
-            <li key={item.plot}>
+            <li key={item.id}>
               {item.plot} - {item.acc}
             </li>
           ))}
