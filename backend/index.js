@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -28,7 +30,9 @@ app.get('/plots', (req, res) => {
     const sql = "SELECT * FROM plot";
 
     db.query(sql, (err, results) => {
+
         if (err) {
+            console.log(err);
             return res.status(500).json({
                 message: "Database error"
             });
@@ -36,6 +40,7 @@ app.get('/plots', (req, res) => {
 
         res.json(results);
     });
+
 });
 
 const PORT = process.env.PORT || 3000;
