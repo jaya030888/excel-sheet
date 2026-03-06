@@ -33,7 +33,7 @@ function App() {
           // )
           .map((item) => (
             <li key={item.id}>
-              {item.id}
+              {item.id} - {item.acc}
             </li>
           ))}
       </ul>
