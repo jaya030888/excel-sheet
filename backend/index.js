@@ -9,42 +9,53 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT
+/* MySQL Connection Pool */
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT
 });
 
-db.connect((err) => {
-    if (err) {
-        console.log("DB connection error:", err);
-        return;
-    }
-    console.log("Connected to Railway MySQL");
+/* Test Database Connection */
+db.getConnection((err, connection) => {
+  if (err) {
+    console.error("Database connection failed:", err);
+    return;
+  }
+  console.log("Connected to Railway MySQL");
+  connection.release();
 });
 
+/* API Route */
 app.get('/plots', (req, res) => {
 
-    const sql = "SELECT * FROM plot";
+  const sql = "SELECT * FROM plot";
 
-    db.query(sql, (err, results) => {
+  db.query(sql, (err, results) => {
 
-        if (err) {
-            console.log(err);
-            return res.status(500).json({
-                message: "Database error"
-            });
-        }
+    if (err) {
+      console.error("Query error:", err);
+      return res.status(500).json({
+        error: err.message
+      });
+    }
 
-        res.json(results);
-    });
+    res.json(results);
+
+  });
 
 });
 
+/* Root route (optional but useful) */
+app.get('/', (req, res) => {
+  res.send("API is running");
+});
+
+/* Server */
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
