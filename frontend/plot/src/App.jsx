@@ -28,9 +28,9 @@ function App() {
 
       <ul>
         {plots
-          // .filter((item) =>
-          //   item.acc.toString().includes(search)
-          // )
+          .filter((item) =>
+            item.id.toString().includes(search)
+          )
           .map((item) => (
             <li key={item.id}>
               {item.id} - {item.acc}
